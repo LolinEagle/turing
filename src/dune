@@ -1,0 +1,5 @@
+(executable
+ (name turing)
+ (public_name turing)
+ (modules main turing)
+ (libraries yojson))
