@@ -3,7 +3,7 @@ SRC			=	src/turing.mli src/turing.ml src/main.ml
 OCAMLC		=	ocamlfind ocamlc
 OCAMLOPT	=	ocamlfind ocamlopt
 OPAM		=	opam
-OCAMLFLAGS	=	-I src# -safe-string -strict-sequence
+OCAMLFLAGS	=	-I src
 LIBS		=	yojson
 PKGS		=	$(shell echo $(LIBS) | sed 's/ /, /g')
 
@@ -17,7 +17,6 @@ re:clean
 	@make
 
 run:re
-	@echo "Running $(NAME)..."
 	./$(NAME) json/unary_sub.json "111-11="
 
 check-dependencies:
@@ -36,8 +35,4 @@ opt:src/turing.cmi
 	@echo "Building with ocamlopt (native code)..."
 	$(OCAMLOPT) -package $(PKGS) -linkpkg $(OCAMLFLAGS) $(SRC) -o $(NAME)
 
-format:
-	@echo "Formatting source files..."
-	ocamlformat --enable-outside-detected-project $(SRC)
-
-.PHONY:all clean re run native byte opt check-dependencies format
+.PHONY:all clean re run native byte opt check-dependencies

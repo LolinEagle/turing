@@ -55,25 +55,37 @@ let simulate_machine machine input =
 	let current_state = ref machine.initial in	(* Current state *)
 
 	(* Print machine details *)
-	Printf.printf "Name     : %s\n" machine.name;
-	Printf.printf "Alphabet : [ %s ]\n" (String.concat ", " (List.map (String.make 1) machine.alphabet));
+	let padding = 39 - String.length machine.name / 2 in
+	Printf.printf "%s\n*%s*\n" (String.make 80 '*') (String.make 78 ' ');
+	Printf.printf "*%s%s%s*\n"
+		(String.make (padding - String.length machine.name mod 2) ' ') machine.name
+		(String.make padding ' ');
+	Printf.printf "*%s*\n%s\n" (String.make 78 ' ') (String.make 80 '*');
+	Printf.printf "Alphabet : [ %s ]\n"
+		(String.concat ", " (List.map (String.make 1) machine.alphabet));
 	Printf.printf "States   : [ %s ]\n" (String.concat ", " machine.states);
 	Printf.printf "Initial  : %s\n" machine.initial;
-	Printf.printf "Finals   : [ %s ]\n\n" (String.concat ", " machine.finals);
+	Printf.printf "Finals   : [ %s ]\n" (String.concat ", " machine.finals);
+	Printf.printf "%s\n" (String.make 80 '*');
 
-	let display_tape () =
+	let display_tape current_state read_char =
+		Printf.printf "[";
 		for i = 0 to tape_length - 1 do
 			if i = !head then Printf.printf "\027[31m%c\027[0m" (Bytes.get tape i)
 			else Printf.printf "%c" (Bytes.get tape i)
 		done;
-		Printf.printf "\n"
+		Printf.printf "] (%s, %c)" current_state read_char;
+	in
+
+	let display_tape_end next_state next_char action =
+		Printf.printf " -> (%s, %c, %s)\n" next_state next_char action;
 	in
 
 	(* Simulation logic remains the same *)
 	while not (List.mem !current_state machine.finals) do
-		display_tape ();
 		(* Reads the character at the head position, defaulting to the blank char *)
 		let read_char = try Bytes.get tape !head with _ -> machine.blank in
+		display_tape !current_state read_char;
 		(* Finds the transitions for the current state *)
 		match Hashtbl.find_opt machine.transitions !current_state with
 		| Some ts -> (
@@ -90,8 +102,10 @@ let simulate_machine machine input =
 						| _ -> failwith "Invalid action"
 					);
 					current_state := trans.to_state;
+					display_tape_end !current_state trans.write trans.action
 				with Not_found ->
-					failwith (Printf.sprintf "No transition found for state %s and read %c" !current_state read_char)
+					failwith (Printf.sprintf "No transition for state %s and read %c"
+						!current_state read_char)
 			)
 		| None ->
 				failwith (Printf.sprintf "Invalid state: %s" !current_state)
