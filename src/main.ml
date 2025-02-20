@@ -13,12 +13,12 @@ let () =
 		exit 0
 	);
 
-	let jsonfile = args.(1) in
+	let machine_file = args.(1) in
 	let input = args.(2) in
 
 	try
-		let json = Yojson.Basic.from_file jsonfile in
-		let machine = Turing.parse_machine json in
+		let machine_json = Yojson.Basic.from_file machine_file in
+		let machine = Turing.parse_machine machine_json in
 		Turing.simulate_machine machine input
 	with
 	| e -> Printf.printf "Error: %s\n" (Printexc.to_string e)
