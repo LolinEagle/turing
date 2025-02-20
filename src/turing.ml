@@ -42,7 +42,7 @@ let parse_machine json =
 		) in
 		Hashtbl.add transitions state ts_list
 	) transitions_json;
-	
+
 	(* Construct the Turing machine record *)
 	{ name; alphabet; blank; states; initial; finals; transitions }
 
@@ -80,13 +80,13 @@ let simulate_machine machine input =
   let display_state (transition) =
 		Printf.printf "[";
 		for i = 0 to tape_length - 1 do
-      if i = !head then Printf.printf "\027[31m%c\027[0m" (Bytes.get tape i)
+			if i = !head then Printf.printf "\027[31m%c\027[0m" (Bytes.get tape i)
 			else Printf.printf "%c" (Bytes.get tape i)
-		done;
-      Printf.printf "] (%s, %c) -> (%s, %c, %s)\n" !current_state
-        (Bytes.get tape !head) transition.to_state transition.write
-        transition.action
-  in
+			done;
+			Printf.printf "] (%s, %c) -> (%s, %c, %s)\n" !current_state
+				(Bytes.get tape !head) transition.to_state transition.write
+				transition.action
+	in
 
 	(* Simulation logic remains the same *)
 	while not (List.mem !current_state machine.finals) do
@@ -98,8 +98,8 @@ let simulate_machine machine input =
 				try
 					(* Finds the transition that matches the read character *)
 					let trans = List.find (fun t -> t.read = read_char) ts in
-          (* Display the state of the machine *)
-          display_state (trans);
+					(* Display the state of the machine *)
+					display_state (trans);
 					(* Writes the character specified by the transition to the tape *)
 					Bytes.set tape !head trans.write;
 					(* Moves the head left or right based on the transition action *)
