@@ -77,15 +77,14 @@ let simulate_machine machine input =
 	display_transitions machine;
 	Printf.printf "%s\n" (String.make 80 '*');
 
-  let display_state (transition) =
+	let display_state transition =
 		Printf.printf "[";
 		for i = 0 to tape_length - 1 do
 			if i = !head then Printf.printf "\027[31m%c\027[0m" (Bytes.get tape i)
 			else Printf.printf "%c" (Bytes.get tape i)
-			done;
-			Printf.printf "] (%s, %c) -> (%s, %c, %s)\n" !current_state
-				(Bytes.get tape !head) transition.to_state transition.write
-				transition.action
+		done;
+		Printf.printf "] (%s, %c) -> (%s, %c, %s)\n" !current_state transition.read
+			transition.to_state transition.write transition.action
 	in
 
 	(* Simulation logic remains the same *)
@@ -99,7 +98,7 @@ let simulate_machine machine input =
 					(* Finds the transition that matches the read character *)
 					let trans = List.find (fun t -> t.read = read_char) ts in
 					(* Display the state of the machine *)
-					display_state (trans);
+					display_state trans;
 					(* Writes the character specified by the transition to the tape *)
 					Bytes.set tape !head trans.write;
 					(* Moves the head left or right based on the transition action *)
@@ -117,4 +116,9 @@ let simulate_machine machine input =
 		| None ->
 				failwith (Printf.sprintf "Invalid state: %s" !current_state)
 	done;
-	Printf.printf "Machine halted in state: %s\n" !current_state
+	Printf.printf "[";
+	for i = 0 to tape_length - 1 do
+		if i = !head then Printf.printf "\027[31m%c\027[0m" (Bytes.get tape i)
+		else Printf.printf "%c" (Bytes.get tape i)
+	done;
+	Printf.printf "] (%s, %c)\n" !current_state (Bytes.get tape !head)
