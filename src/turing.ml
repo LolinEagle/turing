@@ -68,30 +68,29 @@ let simulate_machine machine input =
 	Printf.printf "Finals   : [ %s ]\n" (String.concat ", " machine.finals);
 	Printf.printf "%s\n" (String.make 80 '*');
 
-	let display_tape current_state read_char =
+  let display_state (transition) =
 		Printf.printf "[";
 		for i = 0 to tape_length - 1 do
-			if i = !head then Printf.printf "\027[31m%c\027[0m" (Bytes.get tape i)
+      if i = !head then Printf.printf "\027[31m%c\027[0m" (Bytes.get tape i)
 			else Printf.printf "%c" (Bytes.get tape i)
 		done;
-		Printf.printf "] (%s, %c)" current_state read_char;
-	in
-
-	let display_tape_end next_state next_char action =
-		Printf.printf " -> (%s, %c, %s)\n" next_state next_char action;
-	in
+      Printf.printf "]  (%s, %c) -> (%s, %c, %s)\n" !current_state
+        (Bytes.get tape !head) transition.to_state transition.write
+        transition.action
+  in
 
 	(* Simulation logic remains the same *)
 	while not (List.mem !current_state machine.finals) do
 		(* Reads the character at the head position, defaulting to the blank char *)
 		let read_char = try Bytes.get tape !head with _ -> machine.blank in
-		display_tape !current_state read_char;
 		(* Finds the transitions for the current state *)
 		match Hashtbl.find_opt machine.transitions !current_state with
 		| Some ts -> (
 				try
 					(* Finds the transition that matches the read character *)
 					let trans = List.find (fun t -> t.read = read_char) ts in
+          (* Display the state of the machine *)
+          display_state (trans);
 					(* Writes the character specified by the transition to the tape *)
 					Bytes.set tape !head trans.write;
 					(* Moves the head left or right based on the transition action *)
@@ -102,7 +101,6 @@ let simulate_machine machine input =
 						| _ -> failwith "Invalid action"
 					);
 					current_state := trans.to_state;
-					display_tape_end !current_state trans.write trans.action
 				with Not_found ->
 					failwith (Printf.sprintf "No transition for state %s and read %c"
 						!current_state read_char)
