@@ -46,6 +46,14 @@ let parse_machine json =
 	(* Construct the Turing machine record *)
 	{ name; alphabet; blank; states; initial; finals; transitions }
 
+let display_transitions machine =
+	Hashtbl.iter (fun state transitions ->
+		List.iter (fun t ->
+			Printf.printf "(%s, %c) -> (%s, %c, %s)\n"
+				state t.read t.to_state t.write t.action
+		) transitions
+	) machine.transitions
+
 (* Simulate the Turing machine *)
 let simulate_machine machine input =
 	(* Tape representation *)
@@ -66,6 +74,7 @@ let simulate_machine machine input =
 	Printf.printf "States   : [ %s ]\n" (String.concat ", " machine.states);
 	Printf.printf "Initial  : %s\n" machine.initial;
 	Printf.printf "Finals   : [ %s ]\n" (String.concat ", " machine.finals);
+	display_transitions machine;
 	Printf.printf "%s\n" (String.make 80 '*');
 
   let display_state (transition) =
@@ -74,7 +83,7 @@ let simulate_machine machine input =
       if i = !head then Printf.printf "\027[31m%c\027[0m" (Bytes.get tape i)
 			else Printf.printf "%c" (Bytes.get tape i)
 		done;
-      Printf.printf "]  (%s, %c) -> (%s, %c, %s)\n" !current_state
+      Printf.printf "] (%s, %c) -> (%s, %c, %s)\n" !current_state
         (Bytes.get tape !head) transition.to_state transition.write
         transition.action
   in
