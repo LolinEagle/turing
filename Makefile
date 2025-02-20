@@ -17,7 +17,12 @@ re:clean
 	@make
 
 run:re
+	clear
 	./$(NAME) json/unary_sub.json "111-11="
+#	./$(NAME) json/unary_add.json "111+11"
+#	./$(NAME) json/palindrome.json "101."
+#	./$(NAME) json/lang_0n1n.json "000111"
+#	./$(NAME) json/lang_02n.json "00"
 
 check-dependencies:
 	@echo "Checking dependencies..."
