@@ -59,7 +59,7 @@ let simulate_machine machine input =
   Validate.validate_input machine.alphabet machine.blank input;
 
 	(* Tape representation *)
-	let tape = Bytes.of_string input in					(* Converts the input string *)
+	let tape = Bytes.of_string (input ^ (String.make 8 machine.blank)) in
 	let tape_length = Bytes.length tape in			(* Gets the length of the tape *)
 	let head = ref 0 in													(* Current head position *)
 	let current_state = ref machine.initial in	(* Current state *)
