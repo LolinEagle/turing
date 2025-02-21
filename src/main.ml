@@ -12,6 +12,10 @@ let () =
 		Printf.printf "-h, --help show this help message and exit\n";
 		exit 0
 	);
+	if String.length args.(2) <= 0 then (
+		Printf.printf "The input cannot be an empty string\n";
+		exit 0
+	);
 
 	let machine_file = args.(1) in
 	let input = args.(2) in
