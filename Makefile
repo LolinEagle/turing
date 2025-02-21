@@ -1,5 +1,5 @@
 NAME		=	turing
-SRC			=	src/turing.mli src/turing.ml src/main.ml
+SRC			=	src/validate.mli src/validate.ml src/turing.mli src/turing.ml src/main.ml
 OCAMLC		=	ocamlfind ocamlc
 OCAMLOPT	=	ocamlfind ocamlopt
 OPAM		=	opam
