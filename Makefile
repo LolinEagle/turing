@@ -1,5 +1,7 @@
 NAME		=	turing
-SRC			=	src/validate.mli src/validate.ml src/turing.mli src/turing.ml src/main.ml
+SRC			=	src/validate.mli src/validate.ml \
+				src/turing.mli src/turing.ml \
+				src/main.ml
 OCAMLC		=	ocamlfind ocamlc
 OCAMLOPT	=	ocamlfind ocamlopt
 OPAM		=	opam
@@ -18,11 +20,24 @@ re:clean
 
 run:re
 	clear
-	./$(NAME) json/unary_sub.json "111-11="
-#	./$(NAME) json/unary_add.json "111+11"
-#	./$(NAME) json/palindrome.json "101."
-#	./$(NAME) json/lang_0n1n.json "000111"
-#	./$(NAME) json/lang_02n.json "00"
+ifndef INPUT
+	@echo "usage: make run INPUT=<input>"
+	@echo "Valid input: unary_sub, unary_add, palindrome, lang_0n1n, lang_02n"
+else
+	@if [ "$(INPUT)" = "unary_sub" ]; then \
+		./$(NAME) json/unary_sub.json "111-11="; \
+	elif [ "$(INPUT)" = "unary_add" ]; then \
+		./$(NAME) json/unary_add.json "111+11"; \
+	elif [ "$(INPUT)" = "palindrome" ]; then \
+		./$(NAME) json/palindrome.json "101."; \
+	elif [ "$(INPUT)" = "lang_0n1n" ]; then \
+		./$(NAME) json/lang_0n1n.json "000111"; \
+	elif [ "$(INPUT)" = "lang_02n" ]; then \
+		./$(NAME) json/lang_02n.json "0000"; \
+	else \
+		echo "Invalid input"; \
+	fi
+endif
 
 check-dependencies:
 	@echo "Checking dependencies..."
