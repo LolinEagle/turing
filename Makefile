@@ -1,4 +1,4 @@
-MACHINES = unary_sub unary_add palindrome lang_0n1n lang_02n
+MACHINES = unary_sub unary_add palindrome 0n1n 02n
 
 all:
 	dune build @install

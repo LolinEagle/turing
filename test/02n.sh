@@ -1,7 +1,7 @@
 #!/bin/bash
 
 TURING="../_build/default/src/main.exe"
-MACHINE="../machines/lang_02n.json"
+MACHINE="../machines/02n.json"
 TOTAL=0
 PASSED=0
 
