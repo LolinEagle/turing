@@ -1,5 +1,3 @@
-open Yojson.Basic
-
 let () =
 	let args = Sys.argv in
 
