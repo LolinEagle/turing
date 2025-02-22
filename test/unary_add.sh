@@ -1,7 +1,7 @@
 #!/bin/bash
 
 TURING="../_build/default/src/ft_turing.exe"
-MACHINE="../json/unary_add.json"
+MACHINE="../machines/unary_add.json"
 TOTAL=0
 PASSED=0
 

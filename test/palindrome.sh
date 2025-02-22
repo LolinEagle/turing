@@ -1,7 +1,7 @@
 #!/bin/bash
 
 TURING="../_build/default/src/ft_turing.exe"
-MACHINE="../json/palindrome.json"
+MACHINE="../machines/palindrome.json"
 TOTAL=0
 PASSED=0
 
@@ -19,6 +19,7 @@ test() {
 }
 
 echo "== Palindrome valid cases"
+test "10011" "y"
 test "1001" "y"
 test "11011" "y"
 test "0" "y"
