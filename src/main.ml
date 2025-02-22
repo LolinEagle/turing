@@ -2,7 +2,7 @@ let () =
   let args = Sys.argv in
 
   if Array.length args <> 3 || args.(1) = "-h" || args.(1) = "--help" then (
-    Printf.printf "usage: turing [-h] jsonfile input\n";
+    Printf.printf "usage: ft_turing [-h] jsonfile input\n";
     Printf.printf "positional arguments:\n";
     Printf.printf "jsonfile   json description of the machine\n";
     Printf.printf "input      input of the machine\n";
@@ -20,7 +20,7 @@ let () =
 
   try
     let machine_json = Yojson.Basic.from_file machine_file in
-    let machine = Turing.parse_machine machine_json in
-    Turing.simulate_machine machine input
+    let machine = Simulate.parse_machine machine_json in
+    Simulate.simulate_machine machine input
   with
   | e -> Printf.printf "Error: %s\n" (Printexc.to_string e);

@@ -1,5 +1,5 @@
 (lang dune 3.17)
-(name turing)
+(name ft_turing)
 
 ; (source (github username/reponame))
 ; (authors "Author Name <author@example.com>")
@@ -8,5 +8,5 @@
 ; (documentation https://url/to/documentation)
 
 (package
- (name turing)
+ (name ft_turing)
  (depends ocaml yojson))

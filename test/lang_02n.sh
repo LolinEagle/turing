@@ -1,6 +1,6 @@
 #!/bin/bash
 
-TURING="../_build/default/src/main.exe"
+TURING="../_build/default/src/ft_turing.exe"
 MACHINE="../json/lang_02n.json"
 TOTAL=0
 PASSED=0
