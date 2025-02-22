@@ -1,5 +1,5 @@
 {
-	"name": "lang_02n",
+	"name": "02n",
 	"alphabet": [ "0", ".", "a", "n", "y" ],
 	"blank": ".",
 	"states": [ "q1", "q2", "q3", "q4", "q5", "FALSE", "TRUE", "HALT" ],

@@ -1,5 +1,5 @@
 (executable
- (name turing)
- (public_name turing)
- (modules validate turing main)
- (libraries yojson))
+ (name main)
+ (public_name ft_turing)
+ (libraries yojson)
+ (modules main validate simulate))
