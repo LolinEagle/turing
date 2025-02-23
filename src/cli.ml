@@ -1,8 +1,4 @@
-(* Standard library *)
 open Sys
-
-(* Local modules *)
-open Types
 
 let usage_msg = "usage: ft_turing [-h] jsonfile input\n\
   positional arguments:\n\
@@ -24,4 +20,4 @@ let parse_args () =
     exit 0
   );
 
-  { machine_file = argv.(1); input = argv.(2) }
+  (argv.(1), argv.(2))
