@@ -10,7 +10,7 @@ test() {
     local input=$1
     local expected=$(echo "$2" | sed 's/\./\\./g')
 
-    if $TURING $MACHINE $input 2>&1 | tail -n 1 | cut -c2- | grep -q "^$expected"; then
+    if $TURING $MACHINE $input 2>&1 | tail -n 1 | cut -c2- | grep -q ^$expected; then
         echo "$input ✅ Passed"
         PASSED=$((PASSED + 1))
     else
