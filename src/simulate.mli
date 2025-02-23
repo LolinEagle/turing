@@ -1,4 +1,3 @@
-type turing_machine
+open Types
 
-val parse_machine : Yojson.Basic.t -> turing_machine
 val simulate_machine : turing_machine -> string -> unit
