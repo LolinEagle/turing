@@ -15,12 +15,12 @@ let display_transitions machine =
 	) machine.transitions
 
 (* Simulate the Turing machine *)
-let simulate_machine machine input =
+let simulate_machine machine input_tape =
   (* Validate input before simulation *)
-  validate_input machine.alphabet machine.blank input;
+  validate_input machine.alphabet machine.blank input_tape;
 
 	(* Tape representation *)
-	let tape = Bytes.of_string (input ^ (make 8 machine.blank)) in
+	let tape = Bytes.of_string (input_tape ^ (make 8 machine.blank)) in
 	let tape_length = Bytes.length tape in			(* Gets the length of the tape *)
 	let head = ref 0 in													(* Current head position *)
 	let current_state = ref machine.initial in	(* Current state *)
