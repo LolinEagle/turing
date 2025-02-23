@@ -1,3 +1,8 @@
+type args = {
+	machine_file : string;
+	input : string;
+}
+
 type transition = {
   read : char;       (* character to read *)
   to_state : string; (* state to transition to *)
