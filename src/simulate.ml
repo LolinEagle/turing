@@ -14,18 +14,7 @@ let display_transitions machine =
 		) transitions
 	) machine.transitions
 
-(* Simulate the Turing machine *)
-let simulate_machine machine input_tape =
-  (* Validate input before simulation *)
-  validate_input machine.alphabet machine.blank input_tape;
-
-	(* Tape representation *)
-	let tape = Bytes.of_string (input_tape ^ (make 8 machine.blank)) in
-	let tape_length = Bytes.length tape in			(* Gets the length of the tape *)
-	let head = ref 0 in													(* Current head position *)
-	let current_state = ref machine.initial in	(* Current state *)
-
-	(* Print machine details *)
+let display_machine machine =
 	let padding = 39 - length machine.name / 2 in
 	printf "%s\n*%s*\n" (make 80 '*') (make 78 ' ');
 	printf "*%s%s%s*\n"
@@ -38,7 +27,22 @@ let simulate_machine machine input_tape =
 	printf "Initial  : %s\n" machine.initial;
 	printf "Finals   : [ %s ]\n" (concat ", " machine.finals);
 	display_transitions machine;
-	printf "%s\n" (make 80 '*');
+	printf "%s\n" (make 80 '*')
+
+(* Simulate the Turing machine *)
+let simulate_machine machine input_tape =
+
+  (* Validate input before simulation *)
+  validate_input machine.alphabet machine.blank input_tape;
+
+	(* Display the machine details *)
+	display_machine machine;
+
+	(* Tape representation *)
+	let tape = Bytes.of_string (input_tape ^ (make 8 machine.blank)) in
+	let tape_length = Bytes.length tape in			(* Gets the length of the tape *)
+	let head = ref 0 in													(* Current head position *)
+	let current_state = ref machine.initial in	(* Current state *)
 
 	let display_state transition =
 		printf "[";
