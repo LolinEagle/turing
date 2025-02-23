@@ -5,7 +5,7 @@ open Yojson.Basic.Util
 open Types
 open Validate
 
-(* Parse a JSON description into a Turing machine type *)
+(* Parse a JSON into a Turing machine record *)
 let parse_machine json =
   let name = json |> member "name" |> to_string in
   let alphabet = json |> member "alphabet" |> to_list |> filter_string |> validate_alphabet in
@@ -18,15 +18,15 @@ let parse_machine json =
   let transitions = Hashtbl.create 10 in
 	let transitions_json = json |> member "transitions" |> to_assoc |> fun t -> validate_transitions t states in
     List.iter (fun (state, ts) ->
-        let ts_list = ts |> to_list |> List.map (fun t ->
-            {
-                read = t |> member "read" |> to_string |> (fun r -> validate_read r alphabet);
-                to_state = t |> member "to_state" |> to_string |> (fun s -> validate_state s states);
-                write = t |> member "write" |> to_string |> (fun w -> validate_write w alphabet);
-                action = t |> member "action" |> to_string |> validate_action;
-            }
-        ) in
-        Hashtbl.add transitions state ts_list
+      let ts_list = ts |> to_list |> List.map (fun t ->
+        {
+          read = t |> member "read" |> to_string |> (fun r -> validate_read r alphabet);
+          to_state = t |> member "to_state" |> to_string |> (fun s -> validate_state s states);
+          write = t |> member "write" |> to_string |> (fun w -> validate_write w alphabet);
+          action = t |> member "action" |> to_string |> validate_action;
+        }
+      ) in
+      Hashtbl.add transitions state ts_list
     ) transitions_json;
 
 	(* Construct the Turing machine record *)
