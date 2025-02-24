@@ -6,16 +6,16 @@ TOTAL=0
 PASSED=0
 
 test() {
-    TOTAL=$((TOTAL + 1))
-    local input=$1
-    local expected=$(echo "$2" | sed 's/\./\\./g')
+	TOTAL=$((TOTAL + 1))
+	local input=$1
+	local expected=$(echo "$2" | sed 's/\./\\./g')
 
-    if $TURING $MACHINE $input 2>&1 | tail -n 1 | cut -c2- | grep -q ^$expected; then
-        echo "$input ✅ Passed"
-        PASSED=$((PASSED + 1))
-    else
-        echo "$input ❌ Failed"
-    fi
+	if $TURING $MACHINE $input 2>&1 | tail -n 1 | cut -c2- | grep -q ^$expected; then
+		echo "$input ✅ Passed"
+		PASSED=$((PASSED + 1))
+	else
+		echo "$input ❌ Failed"
+	fi
 }
 
 echo "== Unary add"

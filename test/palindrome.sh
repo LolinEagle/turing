@@ -6,16 +6,16 @@ TOTAL=0
 PASSED=0
 
 test() {
-    TOTAL=$((TOTAL + 1))
-    local input=$1
-    local expected=$2
+	TOTAL=$((TOTAL + 1))
+	local input=$1
+	local expected=$2
 
-    if $TURING $MACHINE $input 2>&1 | tail -n 1 | grep -q $expected; then
-        echo "$input ✅ Passed"
-        PASSED=$((PASSED + 1))
-    else
-        echo "$input ❌ Failed"
-    fi
+	if $TURING $MACHINE $input 2>&1 | tail -n 1 | grep -q $expected; then
+		echo "$input ✅ Passed"
+		PASSED=$((PASSED + 1))
+	else
+		echo "$input ❌ Failed"
+	fi
 }
 
 echo "== Palindrome valid cases"

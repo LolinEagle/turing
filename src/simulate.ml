@@ -23,17 +23,17 @@ let display_machine machine =
 	printf "*%s*\n%s\n" (make 78 ' ') (make 80 '*');
 	printf "Alphabet : [ %s ]\n"
 		(concat ", " (List.map (make 1) machine.alphabet));
-	printf "States   : [ %s ]\n" (concat ", " machine.states);
-	printf "Initial  : %s\n" machine.initial;
-	printf "Finals   : [ %s ]\n" (concat ", " machine.finals);
+	printf "States : [ %s ]\n" (concat ", " machine.states);
+	printf "Initial : %s\n" machine.initial;
+	printf "Finals : [ %s ]\n" (concat ", " machine.finals);
 	display_transitions machine;
 	printf "%s\n" (make 80 '*')
 
 (* Simulate the Turing machine *)
 let simulate_machine machine input_tape =
 
-  (* Validate input before simulation *)
-  validate_input machine.alphabet machine.blank input_tape;
+	(* Validate input before simulation *)
+	validate_input machine.alphabet machine.blank input_tape;
 
 	(* Display the machine details *)
 	display_machine machine;
