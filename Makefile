@@ -8,12 +8,12 @@ clean:
 	dune clean
 	rm -rf _build lib bin doc
 
-test_%: all
+test_%:all
 	@chmod +x test/$*.sh
 	@cd test && ./$*.sh
 
-test: $(foreach machine, $(MACHINES), test_$(machine))
+test:$(foreach machine, $(MACHINES), test_$(machine))
 
-re: clean all
+re:clean all
 
-.PHONY: all clean test re
+.PHONY:all clean test re

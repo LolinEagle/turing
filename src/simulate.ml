@@ -1,91 +1,56 @@
-open Yojson.Basic.Util
+(* Standard library *)
+open Printf
+open String
 
-(* Types for the Turing machine description *)
-type transition = {
-	read : char;				(* character to read *)
-	to_state : string;	(* state to transition to *)
-	write : char;				(* character to write *)
-	action : string;		(* action: "LEFT" or "RIGHT" *)
-}
-
-type turing_machine = {
-	name : string;
-	alphabet : char list;
-	blank : char;
-	states : string list;
-	initial : string;
-	finals : string list;
-	transitions : (string, transition list) Hashtbl.t;
-}
-
-(* Parse a JSON description into a Turing machine type *)
-let parse_machine json =
-  let name = json |> member "name" |> to_string in
-  let alphabet = json |> member "alphabet" |> to_list |> filter_string |> Validate.validate_alphabet in
-  let blank = json |> member "blank" |> to_string |> fun b -> Validate.validate_blank b alphabet in
-  let states = json |> member "states" |> to_list |> filter_string in
-  let initial = json |> member "initial" |> to_string |> fun i -> Validate.validate_initial i states in
-  let finals = json |> member "finals" |> to_list |> filter_string |> fun f -> Validate.validate_finals f states in
-
-  (* Read transitions *)
-  let transitions = Hashtbl.create 10 in
-	let transitions_json = json |> member "transitions" |> to_assoc |> fun t -> Validate.validate_transitions t states in
-    List.iter (fun (state, ts) ->
-        let ts_list = ts |> to_list |> List.map (fun t ->
-            {
-                read = t |> member "read" |> to_string |> (fun r -> Validate.validate_read r alphabet);
-                to_state = t |> member "to_state" |> to_string |> (fun s -> Validate.validate_state s states);
-                write = t |> member "write" |> to_string |> (fun w -> Validate.validate_write w alphabet);
-                action = t |> member "action" |> to_string |> Validate.validate_action;
-            }
-        ) in
-        Hashtbl.add transitions state ts_list
-    ) transitions_json;
-
-	(* Construct the Turing machine record *)
-	{ name; alphabet; blank; states; initial; finals; transitions }
+(* Local modules *)
+open Types
+open Validate
 
 let display_transitions machine =
 	Hashtbl.iter (fun state transitions ->
 		List.iter (fun t ->
-			Printf.printf "(%s, %c) -> (%s, %c, %s)\n"
+			printf "(%s, %c) -> (%s, %c, %s)\n"
 				state t.read t.to_state t.write t.action
 		) transitions
 	) machine.transitions
 
+let display_machine machine =
+	let padding = 39 - length machine.name / 2 in
+	printf "%s\n*%s*\n" (make 80 '*') (make 78 ' ');
+	printf "*%s%s%s*\n"
+		(make (padding - length machine.name mod 2) ' ') machine.name
+		(make padding ' ');
+	printf "*%s*\n%s\n" (make 78 ' ') (make 80 '*');
+	printf "Alphabet : [ %s ]\n"
+		(concat ", " (List.map (make 1) machine.alphabet));
+	printf "States : [ %s ]\n" (concat ", " machine.states);
+	printf "Initial : %s\n" machine.initial;
+	printf "Finals : [ %s ]\n" (concat ", " machine.finals);
+	display_transitions machine;
+	printf "%s\n" (make 80 '*')
+
 (* Simulate the Turing machine *)
-let simulate_machine machine input =
-  (* Validate input before simulation *)
-  Validate.validate_input machine.alphabet machine.blank input;
+let simulate_machine machine input_tape =
+
+	(* Validate input before simulation *)
+	validate_input machine.alphabet machine.blank input_tape;
+
+	(* Display the machine details *)
+	display_machine machine;
 
 	(* Tape representation *)
-	let tape = Bytes.of_string (input ^ (String.make 8 machine.blank)) in
+	let tape = Bytes.of_string (input_tape ^ (make 8 machine.blank)) in
 	let tape_length = Bytes.length tape in			(* Gets the length of the tape *)
 	let head = ref 0 in													(* Current head position *)
 	let current_state = ref machine.initial in	(* Current state *)
 
-	(* Print machine details *)
-	let padding = 39 - String.length machine.name / 2 in
-	Printf.printf "%s\n*%s*\n" (String.make 80 '*') (String.make 78 ' ');
-	Printf.printf "*%s%s%s*\n"
-		(String.make (padding - String.length machine.name mod 2) ' ') machine.name
-		(String.make padding ' ');
-	Printf.printf "*%s*\n%s\n" (String.make 78 ' ') (String.make 80 '*');
-	Printf.printf "Alphabet : [ %s ]\n"
-		(String.concat ", " (List.map (String.make 1) machine.alphabet));
-	Printf.printf "States   : [ %s ]\n" (String.concat ", " machine.states);
-	Printf.printf "Initial  : %s\n" machine.initial;
-	Printf.printf "Finals   : [ %s ]\n" (String.concat ", " machine.finals);
-	display_transitions machine;
-	Printf.printf "%s\n" (String.make 80 '*');
-
 	let display_state transition =
-		Printf.printf "[";
+		printf "[";
 		for i = 0 to tape_length - 1 do
-			if i = !head then Printf.printf "\027[31m%c\027[0m" (Bytes.get tape i)
-			else Printf.printf "%c" (Bytes.get tape i)
+			if i = !head then printf "\027[31m%c\027[0m" (Bytes.get tape i)
+			else printf "%c" (Bytes.get tape i)
 		done;
-		Printf.printf "] (%s, %c) -> (%s, %c, %s)\n" !current_state transition.read
+		printf "] (%s, %c) -> (%s, %c, %s)\n" !current_state transition.read
 			transition.to_state transition.write transition.action
 	in
 
@@ -112,15 +77,15 @@ let simulate_machine machine input =
 					);
 					current_state := trans.to_state;
 				with Not_found ->
-					failwith (Printf.sprintf "No transition for state %s and read %c"
+					failwith (sprintf "No transition for state %s and read %c"
 						!current_state read_char)
 			)
 		| None ->
-				failwith (Printf.sprintf "Invalid state: %s" !current_state)
+				failwith (sprintf "Invalid state: %s" !current_state)
 	done;
-	Printf.printf "[";
+	printf "[";
 	for i = 0 to tape_length - 1 do
-		if i = !head then Printf.printf "\027[31m%c\027[0m" (Bytes.get tape i)
-		else Printf.printf "%c" (Bytes.get tape i)
+		if i = !head then printf "\027[31m%c\027[0m" (Bytes.get tape i)
+		else printf "%c" (Bytes.get tape i)
 	done;
-	Printf.printf "] (%s, %c)\n" !current_state (Bytes.get tape !head)
+	printf "] (%s, %c)\n" !current_state (Bytes.get tape !head)
