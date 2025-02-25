@@ -7,8 +7,13 @@ all:
 
 clean:
 	@dune clean
-	@rm -rf _build lib bin doc
+	@rm -rf _build lib doc
 	@echo "Cleaning done"
+
+fclean:clean
+	@rm -rf bin
+
+re:clean all
 
 test_%:all
 	@chmod +x test/$*.sh
@@ -16,6 +21,4 @@ test_%:all
 
 test:$(foreach machine, $(MACHINES), test_$(machine))
 
-re:clean all
-
-.PHONY:all clean test re
+.PHONY:all clean fclean re test

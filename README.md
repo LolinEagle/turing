@@ -1,5 +1,6 @@
 # Turing machine
-The goal of this project is to write a program able to simulate a single headed, single tape Turing machine from a machine description provided in json.
+The goal of this project is to write a program able to simulate a single
+headed, single tape Turing machine from a machine description provided in json.
 
 ## Authors
 - [François Russo](https://www.github.com/LolinEagle)
