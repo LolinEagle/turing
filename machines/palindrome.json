@@ -1,53 +1,53 @@
 {
 	"name" : "palindrome",
-	"alphabet": [ "0", "1", ".", "y", "n", "_" ],
+	"alphabet": [ "0", "1", ".", "x", "n", "y" ],
 	"blank" : ".",
-	"states" : [ "q0", "q1", "q2", "q3", "q4", "q5", "FALSE", "TRUE", "HALT" ],
+	"states" : [ "q0", "q1", "q2", "q3", "q4", "q5", "false", "true", "HALT" ],
 	"initial" : "q0",
 	"finals" : [ "HALT" ],
 	"transitions" : {
 		"q0": [
-			{ "read" : "0", "to_state": "q1", "write": "_", "action": "RIGHT"},
-			{ "read" : "1", "to_state": "q2", "write": "_", "action": "RIGHT"},
-			{ "read" : "_", "to_state": "TRUE", "write": "_", "action": "RIGHT"}
+			{ "read" : "0", "to_state": "q1", "write": "x", "action": "RIGHT"},
+			{ "read" : "1", "to_state": "q2", "write": "x", "action": "RIGHT"},
+			{ "read" : "x", "to_state": "true", "write": "x", "action": "RIGHT"}
 		],
 		"q1": [
 			{ "read" : "1", "to_state": "q1", "write": "1", "action": "RIGHT"},
 			{ "read" : "0", "to_state": "q1", "write": "0", "action": "RIGHT"},
 			{ "read" : ".", "to_state": "q3", "write": ".", "action": "LEFT"},
-			{ "read" : "_", "to_state": "q3", "write": "_", "action": "LEFT"}
+			{ "read" : "x", "to_state": "q3", "write": "x", "action": "LEFT"}
 		],
 		"q2": [
 			{ "read" : "1", "to_state": "q2", "write": "1", "action": "RIGHT"},
 			{ "read" : "0", "to_state": "q2", "write": "0", "action": "RIGHT"},
 			{ "read" : ".", "to_state": "q4", "write": ".", "action": "LEFT"},
-			{ "read" : "_", "to_state": "q4", "write": "_", "action": "LEFT"}
+			{ "read" : "x", "to_state": "q4", "write": "x", "action": "LEFT"}
 		],
 		"q3": [
-			{ "read" : "0", "to_state": "q5", "write": "_", "action": "LEFT"},
-			{ "read" : "1", "to_state": "FALSE", "write": "_", "action": "RIGHT"},
-			{ "read" : "_", "to_state": "TRUE", "write": "_", "action": "RIGHT"}
+			{ "read" : "0", "to_state": "q5", "write": "x", "action": "LEFT"},
+			{ "read" : "1", "to_state": "false", "write": "x", "action": "RIGHT"},
+			{ "read" : "x", "to_state": "true", "write": "x", "action": "RIGHT"}
 		],
 		"q4": [
-			{ "read" : "1", "to_state": "q5", "write": "_", "action": "LEFT"},
-			{ "read" : "0", "to_state": "FALSE", "write": "_", "action": "RIGHT"},
-			{ "read" : "_", "to_state": "TRUE", "write": "_", "action": "RIGHT"}
+			{ "read" : "1", "to_state": "q5", "write": "x", "action": "LEFT"},
+			{ "read" : "0", "to_state": "false", "write": "x", "action": "RIGHT"},
+			{ "read" : "x", "to_state": "true", "write": "x", "action": "RIGHT"}
 		],
 		"q5": [
 			{ "read" : "1", "to_state": "q5", "write": "1", "action": "LEFT"},
 			{ "read" : "0", "to_state": "q5", "write": "0", "action": "LEFT"},
-			{ "read" : "_", "to_state": "q0", "write": "_", "action": "RIGHT"}
+			{ "read" : "x", "to_state": "q0", "write": "x", "action": "RIGHT"}
 		],
-		"FALSE": [
-			{ "read" : "1", "to_state": "FALSE", "write": "1", "action": "RIGHT"},
-			{ "read" : "0", "to_state": "FALSE", "write": "0", "action": "RIGHT"},
-			{ "read" : "_", "to_state": "FALSE", "write": "_", "action": "RIGHT"},
+		"false": [
+			{ "read" : "1", "to_state": "false", "write": "1", "action": "RIGHT"},
+			{ "read" : "0", "to_state": "false", "write": "0", "action": "RIGHT"},
+			{ "read" : "x", "to_state": "false", "write": "x", "action": "RIGHT"},
 			{ "read" : ".", "to_state": "HALT", "write": "n", "action": "LEFT"}
 		],
-		"TRUE": [
-			{ "read" : "1", "to_state": "TRUE", "write": "1", "action": "RIGHT"},
-			{ "read" : "0", "to_state": "TRUE", "write": "0", "action": "RIGHT"},
-			{ "read" : "_", "to_state": "TRUE", "write": "_", "action": "RIGHT"},
+		"true": [
+			{ "read" : "1", "to_state": "true", "write": "1", "action": "RIGHT"},
+			{ "read" : "0", "to_state": "true", "write": "0", "action": "RIGHT"},
+			{ "read" : "x", "to_state": "true", "write": "x", "action": "RIGHT"},
 			{ "read" : ".", "to_state": "HALT", "write": "y", "action": "LEFT"}
 		]
 	}

@@ -1,9 +1,0 @@
-{
-	"[ocaml]": {
-		"editor.insertSpaces": false,
-		"editor.tabSize": 2,
-		"editor.detectIndentation": false
-	},
-	"editor.useTabStops": true,
-	"files.trimTrailingWhitespace": true
-}
