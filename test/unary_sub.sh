@@ -23,6 +23,7 @@ test(){
 echo "Unary sub _______________________________________________________________"
 test "1-1=" ""
 test "11-1=" "1"
+test "111-11=" "1"
 test "1111-111=" "1"
 echo "$PASSED/$TOTAL tests passed"
 

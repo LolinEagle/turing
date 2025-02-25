@@ -19,7 +19,7 @@ test(){
 }
 
 echo "Palindrome valid cases __________________________________________________"
-test "10011" "y"
+test "10001" "y"
 test "1001" "y"
 test "11011" "y"
 test "0" "y"
@@ -29,6 +29,7 @@ test "100" "n"
 test "1010" "n"
 test "110" "n"
 test "01" "n"
+test "10011" "n"
 echo "$PASSED/$TOTAL tests passed"
 
 # Exit with status 1 if any test failed
