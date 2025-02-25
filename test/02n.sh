@@ -21,14 +21,15 @@ test(){
 echo "02n valid cases _________________________________________________________"
 test "00" "y"
 test "0000" "y"
-test "00000" "y"
-test "0000000" "y"
-test "000000000" "y"
+test "00000000" "y"
 echo "02n invalid cases _______________________________________________________"
 test "0" "n"
 test "000" "n"
 test "00000" "n"
+test "000000" "n"
 test "0000000" "n"
+test "000000000" "n"
+
 echo "$PASSED/$TOTAL tests passed"
 
 # Exit with status 1 if any test failed
