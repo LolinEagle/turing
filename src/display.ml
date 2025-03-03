@@ -8,14 +8,13 @@ let ansi_reset = "\027[0m"
 let with_color str = sprintf "%s%s%s" ansi_red str ansi_reset
 
 let display_tape tape head =
-  printf "[";
-  Bytes.iter (fun c ->
-    if Bytes.index tape c = head then
-      printf "%s" (with_color (String.make 1 c))
-    else
-      printf "%c" c
-  ) tape;
-  printf "]"
+  let chars = 
+    List.init (Bytes.length tape) (fun i ->
+      let c = Bytes.get tape i |> String.make 1 in
+      if i = head then with_color c else c
+    )
+  in
+  printf "[%s]" (String.concat "" chars)
 
 let display_step tape head current_state transition =
   display_tape tape head;
