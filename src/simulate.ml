@@ -63,18 +63,18 @@ let simulate_machine machine input_tape =
 		| Some ts -> (
 				try
 					(* Finds the transition that matches the read character *)
-					let trans = List.find (fun t -> t.read = read_char) ts in
+					let transition = List.find (fun t -> t.read = read_char) ts in
 					(* Display the state of the machine *)
-					display_state trans;
+					display_state transition;
 					(* Writes the character specified by the transition to the tape *)
-					Bytes.set tape !head trans.write;
+					Bytes.set tape !head transition.write;
 					(* Moves the head left or right based on the transition action *)
 					head := (
-						match trans.action with
+						match transition.action with
 						| Left -> max 0 (!head - 1)
 						| Right -> min (tape_length - 1) (!head + 1)
 					);
-					current_state := trans.to_state;
+					current_state := transition.to_state;
 				with Not_found ->
 					failwith (sprintf "No transition for state %s and read %c"
 						!current_state read_char)
