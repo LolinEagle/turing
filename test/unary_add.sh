@@ -5,7 +5,7 @@ MACHINE="../machines/unary_add.json"
 TOTAL=0
 PASSED=0
 
-test(){
+test() {
 	TOTAL=$((TOTAL + 1))
 	local input=$1
 	local expected=$(echo "$2" | sed 's/\./\\./g')
@@ -26,6 +26,3 @@ test "11+1" "111."
 test "1+11" "111."
 test "11111+1" "111111."
 echo "$PASSED/$TOTAL tests passed"
-
-# Exit with status 1 if any test failed
-# [ $PASSED -eq $TOTAL ] || exit 1

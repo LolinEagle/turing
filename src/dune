@@ -2,4 +2,4 @@
  (name main)
  (public_name ft_turing)
  (libraries yojson)
- (modules main parse validate simulate types cli))
+ (modules main parse validate simulate types cli display))

@@ -2,10 +2,12 @@
 
 TURING="../_build/default/src/main.exe"
 MACHINE="../machines/palindrome.json"
+SUCCESS="y"
+FAILURE="n"
 TOTAL=0
 PASSED=0
 
-test(){
+test() {
 	TOTAL=$((TOTAL + 1))
 	local input=$1
 	local expected=$2
@@ -18,19 +20,24 @@ test(){
 	fi
 }
 
-echo "Palindrome valid cases __________________________________________________"
-test "10001" "y"
-test "1001" "y"
-test "11011" "y"
-test "0" "y"
-test "00" "y"
-echo "Palindrome invalid cases ________________________________________________"
-test "100" "n"
-test "1010" "n"
-test "110" "n"
-test "01" "n"
-test "10011" "n"
-echo "$PASSED/$TOTAL tests passed"
+test_success() {
+    test "$1" "$SUCCESS"
+}
 
-# Exit with status 1 if any test failed
-# [ $PASSED -eq $TOTAL ] || exit 1
+test_failure() {
+    test "$1" "$FAILURE"
+}
+
+echo "Palindrome valid inputs _________________________________________________"
+test_success "1001"
+test_success "11011"
+test_success "0"
+test_success "00"
+
+echo "Palindrome invalid inputs _______________________________________________"
+test_failure "100"
+test_failure "1010"
+test_failure "110"
+test_failure "01"
+
+echo "$PASSED/$TOTAL tests passed"

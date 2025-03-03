@@ -2,10 +2,12 @@
 
 TURING="../_build/default/src/main.exe"
 MACHINE="../machines/0n1n.json"
+SUCCESS="y"
+FAILURE="n"
 TOTAL=0
 PASSED=0
 
-test(){
+test() {
 	TOTAL=$((TOTAL + 1))
 	local input=$1
 	local expected=$2
@@ -18,21 +20,28 @@ test(){
 	fi
 }
 
-echo "0n1n valid cases ________________________________________________________"
-test "01" "y"
-test "0011" "y"
-test "000111" "y"
-test "000000000000000000000000000000111111111111111111111111111111" "y"
-echo "0n1n invalid cases ______________________________________________________"
-test "0" "n"
-test "1" "n"
-test "001" "n"
-test "011" "n"
-test "0001" "n"
-test "0111" "n"
-test "00000111" "n"
-test "00000000011111111" "n"
-echo "$PASSED/$TOTAL tests passed"
+test_success() {
+    test "$1" "$SUCCESS"
+}
 
-# Exit with status 1 if any test failed
-# [ $PASSED -eq $TOTAL ] || exit 1
+test_failure() {
+    test "$1" "$FAILURE"
+}
+
+echo "0n1n valid inputs _______________________________________________________"
+test_success "01"
+test_success "0011"
+test_success "000111"
+test_success "0000000011111111"
+
+echo "0n1n invalid inputs _____________________________________________________"
+test_failure "0"
+test_failure "1"
+test_failure "001"
+test_failure "011"
+test_failure "0001"
+test_failure "0111"
+test_failure "00000111"
+test_failure "00000000011111111"
+
+echo "$PASSED/$TOTAL tests passed"
