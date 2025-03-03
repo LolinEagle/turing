@@ -10,7 +10,7 @@ let display_transitions machine =
 	Hashtbl.iter (fun state transitions ->
 		List.iter (fun t ->
 			printf "(%s, %c) -> (%s, %c, %s)\n"
-				state t.read t.to_state t.write t.action
+				state t.read t.to_state t.write (string_of_direction t.action)
 		) transitions
 	) machine.transitions
 
@@ -51,7 +51,7 @@ let simulate_machine machine input_tape =
 			else printf "%c" (Bytes.get tape i)
 		done;
 		printf "] (%s, %c) -> (%s, %c, %s)\n" !current_state transition.read
-			transition.to_state transition.write transition.action
+			transition.to_state transition.write (string_of_direction transition.action)
 	in
 
 	(* Simulation logic remains the same *)
@@ -71,9 +71,8 @@ let simulate_machine machine input_tape =
 					(* Moves the head left or right based on the transition action *)
 					head := (
 						match trans.action with
-						| "LEFT" -> max 0 (!head - 1)
-						| "RIGHT" -> min (tape_length - 1) (!head + 1)
-						| _ -> failwith "Invalid action"
+						| Left -> max 0 (!head - 1)
+						| Right -> min (tape_length - 1) (!head + 1)
 					);
 					current_state := trans.to_state;
 				with Not_found ->
