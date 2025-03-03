@@ -21,11 +21,11 @@ test() {
 }
 
 test_success() {
-    test "$1" "$SUCCESS"
+	test "$1" "$SUCCESS"
 }
 
 test_failure() {
-    test "$1" "$FAILURE"
+	test "$1" "$FAILURE"
 }
 
 echo "0n1n valid inputs _______________________________________________________"

@@ -33,7 +33,7 @@ let simulate_machine machine input_tape =
 					(* Finds the transition that matches the read character *)
 					let transition = List.find (fun t -> t.read = read_char) ts in
 					(* Display the state of the machine *)
-          display_step tape !head !current_state transition;
+					display_step tape !head !current_state transition;
 					(* Writes the character specified by the transition to the tape *)
 					Bytes.set tape !head transition.write;
 					(* Moves the head left or right based on the transition action *)
@@ -50,5 +50,5 @@ let simulate_machine machine input_tape =
 		| None ->
 				failwith (sprintf "Invalid state: %s" !current_state)
 	done;
-  display_tape tape !head;
-  printf " (%s, %c)\n" !current_state (Bytes.get tape !head)
+	display_tape tape !head;
+	printf " (%s, %c)\n" !current_state (Bytes.get tape !head)

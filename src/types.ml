@@ -18,10 +18,10 @@ type turing_machine = {
 }
 
 let direction_of_string = function
-  | "LEFT" -> Left
-  | "RIGHT" -> Right
-  | s -> failwith (Printf.sprintf "Invalid direction: '%s'. Must be 'LEFT' or 'RIGHT'" s)
+	| "LEFT" -> Left
+	| "RIGHT" -> Right
+	| s -> failwith (Printf.sprintf "Invalid direction: '%s'. Must be 'LEFT' or 'RIGHT'" s)
 
 let string_of_direction = function
-  | Left -> "LEFT"
-  | Right -> "RIGHT"
+	| Left -> "LEFT"
+	| Right -> "RIGHT"
